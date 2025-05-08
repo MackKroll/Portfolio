@@ -11,6 +11,9 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - projectBackground.qmd
+      - model.qmd
+      - results.qmd
       - about.qmd
 
 format:

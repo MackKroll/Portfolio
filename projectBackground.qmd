@@ -1,0 +1,13 @@
+---
+title: "Project Background"
+---
+
+# Learning Reward Discrimination in Purely Pavlovian Conditioning
+
+My current projects involve training rats on a Pavlovian paradigm to discriminate between five different cues that predict five increasing levels of reward. In each trial, an auditory tone is played for three seconds, then a brief 500ms pulse of electrical stimulation is delivered to the medial forebrain bundle (MFB). Each of the five tones (ascending in pitch) is paired with a distinct brain stimulation reward (BSR), save for the lowest tone that is followed by no stimulation as a probe trial. Over one full session, these five trial types are presented ten times each in random order, totaling to 50 trials per session. Over ten sessions, animals' signal recorded from dopamine neurons in the nucleus accumbens shows a learned, graded association between cue and stimulation.
+
+![Example averaged traces of dopamine signal on the first and last day of training](images/trained.jpg)
+
+### Rationale
+
+Establishing a stable learning paradigm around discriminable stimuli of increasing value allows me to ask questions about associative reward learning with much more nuance. Trained rats in various treatment conditions show altered responses to the cue or stimulation, giving further insight into the mechanisms treatment effects. Furthermore, in just the training data alone, we are now able to observe, quantify, and perhaps even model the time course of reward learning.

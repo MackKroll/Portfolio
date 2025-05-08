@@ -2,4 +2,6 @@
 title: "About"
 ---
 
-About this site
+# About this site
+
+Though this is a project for a data science class on machine learning, I hope to grow it into a documentation of my work with these data as a graduate student and perhaps even a discussion starter for other fiber photometry users. I hope this site comes across as a guide for beginners looking to try new things with photometry as well as an exploration of how modern data techniques and research can come together.

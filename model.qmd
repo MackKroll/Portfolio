@@ -1,0 +1,76 @@
+---
+title: "Machine Learning Model"
+---
+
+# Using Random Forest Models to Predict Training Stability
+
+### Can a model from a previous training day predict the current day's responses?
+
+My aim is to determine whether it is reasonable to use a model predicting a future training day's data as a way to determine that an animal has sufficiently learned an association. By doing so, I am treating the following day as the test data while the model describes the training data. I am using random forest modeling because it can handle smaller data sets (as within-subjects studies often yield) by training on bootstrapped data, it can fit to continuous dependent variables, and it protects dominant predictors from being overrepresented in the model.
+
+For model fitness, I will be using R-squared to assess how much variance the model is able to account for as well as root mean squared error (RMSE) and mean absolute error (MAE) to ensure that model error stays within reasonable bounds.
+
+All analysis coding is performed using R. All signal processing is performed in MatLab.
+
+``` r
+    currModel <- train(meanQ~FreqType+ITI+BlockTrial+Trial+meanITI+maxStim+SDITI,
+                data  = currData,
+                method = "rf",
+                trControl=trainControl(method = 'oob'), 
+                preProcess=c("center","scale"),
+                metric='RMSE',
+                importance = TRUE,
+                ntree=1000,
+                tuneGrid = expand.grid(mtry=seq(1, 7,1)))
+```
+
+### Inputs
+
+From my processed data (subtracted and filtered signal using [PASTa toolbox](https://rdonka.github.io/PASTaUserGuide/)), I have selected a number of features extracted from time-locked chunks of the session stream. These are defined as:
+
+1.  meanQ: The mean of all data points recorded within the 3-second cue period
+
+2.  maxQ: The peak value recorded during the 3-second cue period
+
+3.  meanStim: The mean of all data points recorded within the 5-second stimulation period
+
+4.  maxStim: The peak value recorded during the 5-second stimulation period
+
+5.  ITI: The length of time between the present and previous trials, randomized between 22-30 seconds
+
+6.  MeanITI: The mean of all data points recorded within the ITI period
+
+7.  SDITI: The variance during the ITI period
+
+8.  FreqType: Which of the five cue+stimulation pairings was presented in that trial
+
+9.  BlockTrial: The order of presentation within the "block" that the trial type arrives in. There are 10 blocks thorughout the session, and each frequency type is presented once during each block
+
+10. Trial: A value 1-50 that denotes the number of trials that have passed
+
+Here, meanQ is used as the dependent variable because I am most interested in the development of responses to the learned cue.
+
+### Outputs
+
+This analysis pipeline creates a model for each training day for each individual animal. It then calculates feature importance for each model, which is a measure that identifies the most influential predictors in model accuracy. Lastly, each day's model is then used to predict its following day's dataset. Each tested day's model gets a measure of R-squared, RSME, and MAE. Importantly, as this is within-subjects, each model, its ranked variables, and its prediction of the following day get assigned a new object within the global environment so that no data is overwritten as the for-loop iterates through subjects.
+
+``` r
+  for(currSession in 2:nSessions){
+    currData <- currSubjectData %>% filter(Day==currSession)
+    predictModelName <- c(paste(currSubjectModels[currSession-1]))
+    predictModel <- get(predictModelName)
+    currPredictTest <- predictModel %>% predict(currData)
+    currValidationTest <-data.frame(R2.test = R2(currPredictTest, currData$meanQ),
+                                    RMSE.test = RMSE(currPredictTest, currData$meanQ),
+                                    MAE.test = MAE(currPredictTest, currData$meanQ),
+                                    validation.session = currSession)
+    currValidationTestName <- c(paste("validationSetTest", currSubject, currSession, sep="."))
+    assign(currValidationTestName, currValidationTest)
+    currSubjectValidationNameList[currSession-1] <- currValidationTestName}
+```
+
+To better visualize the output data, this analysis pipeline returns a layout of three plots: 1) RSME and MAE from each model predicting the following day across sessions, 2) R-squared from each model predicting the following day across sessions, and 3) variable importance from each model across sessions. This gives a better look into how predictors of dopamine response shift over time. These figures are saved to a specified path.
+
+Lastly, the analysis pipeline compiles all subjects into one table that gives the R-squared, RMSE, MAE, and most influential variable (MIV) of the 9th model predicting the last day of training. These results are all compiled into a table.
+
+Examples of these outputs can be viewed under the results tab.

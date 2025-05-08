@@ -2,8 +2,16 @@
 title: "Portfolio"
 ---
 
-This is a Quarto website.
+# A Second Pair of Eyes: Machine Learning in Fiber Photometry Data Analysis
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Welcome to my portfolio, a documentation of and guide to using machine learning techniques to assess fiber photometry data. As a relatively new method, fiber photometry offers researchers the ability to record population-level signal from neurons in awake and behaving animals in real time.
 
-This is the gorgeous beginning of something new \<3
+A frontier in neural measurements, while exciting, comes with its challenges in validation. Readout of photometry data comes in the form of signal streams composed of over a thousand data points per second. Often, bits of these cropped streams will be time-locked to the onset of a stimulus, then averaged traces across trials represent neural responses.
+
+![Graphic depicting averaged traces in photometry data collection](images/FPdata.jpg)
+
+### What is *really* being analyzed?
+
+Quantification of these massive data streams requires manual feature selection at the hands of the experimenter. On top of this, the preprocessing (subtracting, filtering, scaling) of signal before analysis is yet to be standardized in the field. To take this even further, whether an animal has a clear signal has a large impact on the data, making between-animal validation a challenge. In sum, the potential for cherry-picking effects is high, and support from machine learning techniques may aid in reducing arbitration.
+
+Common features selected in fiber photometry data focus on the frequency and amplitude of transients, or events that show a synchronized neural population response. Because a single-trial transient can be unstable or "noisy," it is common practice to run multiple trials and average these measures. While the averaged data are indeed more stable, the time course of how these responses develop over a session is lost. When studying behavior, the time course of learning is too important to smooth over.

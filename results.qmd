@@ -1,0 +1,56 @@
+---
+title: "Example Results"
+---
+
+# Subject Training Validity Based on Model Results
+
+### Valid Subject
+
+![Subject 1038 - Random Forest Model Visualization](images/RFResultsPlot.1038%20copy-01.jpeg)
+
+In the figures above, it is clear that the model is able to predict responses in the final day of training with minimal error while explaining most of the variance in the data. In all models for this subject, maxStim was the most influential predictor of accuracy. This is reassuring, as this would translate to this subject's responses to the cue being best predicted by the magnitude of the reward. Not only that, but this association may have even been learned as early as the first session, where maxStim was still the most influential predictor.
+
+Results and visualization from this model are in line with this subject's averaged traces from training sessions, which are still the gold standard for fiber photometry data analysis. These traces are shown below, and as would be expected from a well-trained animal, responses are clean and discriminable.
+
+![Subject 1038 - Averaged Traces for Each Trial Type Across Sessions](images/trainingTraces_1038.jpg)
+
+### Invalid Subject
+
+![Subject 1075 - Random Forest Model Visualization](images/RFResultsPlot.1075%20copy.jpeg)
+
+In this subject's data, even by the last session of training, a random forest model was not able to explain any of the variance in the following day's data. The plotted variable importance is less consistent and displays Trial number as the most influential predictor, which is theoretically agnostic to reward learning. Similarly, these plots reflect the lack of discrimination and general cue response in this subject's averaged traces.
+
+![Subject 1075 - Averaged Traces for Each Trial Type Across Sessions](images/1075_MeanSessionTrace_normZprepostBL%20copy.png)
+
+### Summary Table
+
+As mentioned, these data culminate into a summary table for a total of 24 subjects, all of which were exposed to the same training protocol. This serves as a quick way to go through and pick out subjects to exclude from analyses, a process that is usually done manually by visualization of traces. Now, with a bit of help from machine learning techniques, more legitimate quantification restraints can be placed on the subject pool.
+
+Model: meanQ \~ FreqType + ITI + BlockTrial + Trial + meanITI + maxStim + SDITI , Model Type: Random Forest , Training Method: oob , Number of Trees: 1000 , mtry = 7
+
+| Subject |        R2 |      RMSE |       MAE | MIV                    |
+|:--------|----------:|----------:|----------:|:-----------------------|
+| 1041    | 0.3949578 | 1.7729765 | 1.4652645 | maxStim                |
+| 1052    | 0.5793458 | 4.7512960 | 4.0446574 | maxStim                |
+| 1054    | 0.7272169 | 8.9439934 | 7.7853564 | FreqTypeFrequency: 141 |
+| 1056    | 0.5839287 | 5.7939225 | 4.5195827 | maxStim                |
+| 1058    | 0.5817878 | 4.2655661 | 3.2458450 | maxStim                |
+| 1028    | 0.8509219 | 2.7488576 | 2.1414415 | maxStim                |
+| 1031    | 0.6272406 | 1.6812927 | 1.3531908 | maxStim                |
+| 1036    | 0.6701905 | 3.1273694 | 2.6344605 | maxStim                |
+| 1038    | 0.7797942 | 0.6435647 | 0.4929969 | maxStim                |
+| 1059    | 0.2962061 | 0.6654981 | 0.5170113 | maxStim                |
+| 1061    | 0.3405076 | 0.4895846 | 0.4351899 | maxStim                |
+| 1069    | 0.1491278 | 0.8778398 | 0.6704789 | maxStim                |
+| 1073    | 0.0490711 | 4.3076709 | 3.3631842 | FreqTypeFrequency: 141 |
+| 1075    | 0.0003382 | 1.1213876 | 0.8784168 | Trial                  |
+| 1077    | 0.3447976 | 6.4837911 | 5.2959359 | maxStim                |
+| 1079    | 0.0129195 | 1.6052732 | 1.1530791 | Trial                  |
+| 1081    | 0.3043969 | 3.2576226 | 2.7574021 | meanITI                |
+| 1083    | 0.0131632 | 1.0648106 | 0.8615191 | FreqTypeFrequency: 63  |
+| 1085    | 0.1226153 | 2.0922213 | 1.6704706 | maxStim                |
+| 1045    | 0.1092476 | 0.9239816 | 0.7153494 | meanITI                |
+| 1046    | 0.6625300 | 2.5399659 | 1.9851904 | maxStim                |
+| 1050    | 0.4741522 | 3.6576754 | 2.9201575 | FreqTypeFrequency: 141 |
+| 1043    | 0.4106178 | 1.7732621 | 1.3511310 | FreqTypeFrequency: 63  |
+| 1051    | 0.1127578 | 2.5399590 | 2.1136078 | FreqTypeFrequency: 79  |
